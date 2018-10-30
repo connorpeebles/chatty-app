@@ -86,8 +86,9 @@ class App extends Component {
       username: username,
       content: content
     };
-    const messages = this.state.messages.concat(newMessage);
-    this.setState({messages: messages});
+    this.socket.send(JSON.stringify(newMessage));
+    // const messages = this.state.messages.concat(newMessage);
+    // this.setState({messages: messages});
   }
 
   generateRandomString = () => {
