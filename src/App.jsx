@@ -7,6 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      counter: 8,
       currUser: {name: "Bob"},
       messages: [
         {
@@ -51,6 +52,20 @@ class App extends Component {
         },
       ]
     }
+    this._addMessage = this._addMessage.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount <App />");
+    setTimeout(() => {
+      console.log("Simulating incoming message");
+      // Add a new message to the list of messages in the data store
+      const newMessage = {id: 8, type: "incomingMessage", username: "Michelle", content: "Hello there!"};
+      const messages = this.state.messages.concat(newMessage)
+      // Update the state of the app component.
+      // Calling setState will trigger a call to render() in App and all child components.
+      this.setState({messages: messages})
+    }, 3000);
   }
 
   render() {
@@ -58,9 +73,21 @@ class App extends Component {
       <div>
         <Navbar />
         <MessageList messages={this.state.messages} />
-        <Chatbar currUser={this.state.currUser} />
+        <Chatbar currUser={this.state.currUser} addMessage={this._addMessage} />
       </div>
     );
+  }
+
+  _addMessage(username, content) {
+    const newCounter = this.state.counter + 1;
+    const newMessage = {
+      id: newCounter,
+      type: "incomingMessage",
+      username: username,
+      content: content
+    };
+    const messages = this.state.messages.concat(newMessage);
+    this.setState({counter: newCounter, messages: messages});
   }
 }
 
