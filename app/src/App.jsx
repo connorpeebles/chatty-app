@@ -33,7 +33,8 @@ class App extends Component {
     const newMessage = {
       type: type,
       username: username,
-      content: content
+      content: content,
+      colour: this.state.currUser.colour
     };
     this.socket.send(JSON.stringify(newMessage));
   }
@@ -44,6 +45,8 @@ class App extends Component {
     if (newMessage.type === "updateNumUsers") {
       console.log("Updated number of users");
       this.setState({numUsers: newMessage.numUsers})
+    } else if (newMessage.type === "assignColour") {
+      this.setState({currUser: {name: this.state.currUser.name, colour: newMessage.colour}});
     } else if (newMessage.type === "incomingMessage") {
       console.log(`Incoming message from ${newMessage.username}`)
       const messages = this.state.messages.concat(newMessage);
@@ -58,7 +61,7 @@ class App extends Component {
   }
 
   updateCurrUser = (newName) => {
-    this.setState({currUser: {name: newName}});
+    this.setState({currUser: {name: newName, colour: this.state.currUser.colour}});
   }
 
 }
