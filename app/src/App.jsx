@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import Chatbar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
+import Navbar from './Navbar.jsx';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      numUsers: 0,
       currUser: {name: ""},
       messages: []
     }
@@ -20,7 +22,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar numUsers={this.state.numUsers} />
         <MessageList messages={this.state.messages} />
         <Chatbar currUser={this.state.currUser} addMessage={this.addMessage} updateCurrUser={this.updateCurrUser} />
       </div>
@@ -39,7 +41,9 @@ class App extends Component {
   handleMessage = (event) => {
     const newMessage = JSON.parse(event.data);
 
-    if (newMessage.type === "incomingMessage") {
+    if (newMessage.type === "updateNumUsers") {
+      this.setState({numUsers: newMessage.numUsers})
+    } else if (newMessage.type === "incomingMessage") {
       console.log(`Incoming message from ${newMessage.username}`)
       const messages = this.state.messages.concat(newMessage);
       this.setState({messages: messages});
@@ -48,7 +52,7 @@ class App extends Component {
       const messages = this.state.messages.concat(newMessage);
       this.setState({messages: messages});
     } else {
-      console.log("Unknown response");
+      console.log("Unknown response from server");
     }
   }
 
@@ -56,16 +60,6 @@ class App extends Component {
     this.setState({currUser: {name: newName}});
   }
 
-}
-
-class Navbar extends Component {
-  render() {
-    return (
-      <nav className="navbar">
-        <a href="/" className="navbar-brand">Chatty</a>
-      </nav>
-    );
-  }
 }
 
 export default App;

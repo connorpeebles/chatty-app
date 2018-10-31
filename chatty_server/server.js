@@ -22,7 +22,18 @@ const wss = new SocketServer({ server });
 wss.on('connection', (client) => {
   console.log('Client connected');
 
+  let updateNumUsers = {
+    type: "updateNumUsers",
+    numUsers: wss.clients.size
+  };
+  wss.clients.forEach((c) => {
+    c.send(JSON.stringify(updateNumUsers));
+  });
+
+  console.log(wss.clients.size);
+
   client.on('message', (message) => {
+    console.log("lol");
     const sendMessage = () => {
       wss.clients.forEach((c) => {
         c.send(JSON.stringify(messageObj));
@@ -30,14 +41,15 @@ wss.on('connection', (client) => {
     };
 
     const messageObj = JSON.parse(message);
-    messageObj.id = uuidv4();
 
     if (messageObj.type === "postMessage") {
       console.log(`User ${messageObj.username} said ${messageObj.content}`);
+      messageObj.id = uuidv4();
       messageObj.type = "incomingMessage";
       sendMessage();
     } else if (messageObj.type === "postNotification") {
       console.log("Updated user");
+      messageObj.id = uuidv4();
       messageObj.type = "incomingNotification";
       sendMessage();
     } else {
