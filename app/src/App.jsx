@@ -7,7 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numUsers: 0,
+      numUsers: null,
       currUser: {name: ""},
       messages: []
     }
@@ -42,6 +42,7 @@ class App extends Component {
     const newMessage = JSON.parse(event.data);
 
     if (newMessage.type === "updateNumUsers") {
+      console.log("Updated number of users");
       this.setState({numUsers: newMessage.numUsers})
     } else if (newMessage.type === "incomingMessage") {
       console.log(`Incoming message from ${newMessage.username}`)
