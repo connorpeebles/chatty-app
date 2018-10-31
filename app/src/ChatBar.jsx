@@ -3,8 +3,14 @@ import React, {Component} from 'react';
 class Chatbar extends Component {
   render() {
     const keyUpHandler = (evt) => {
+      const currName = this.props.currUser.name;
+      const newName = evt.target.previousSibling.value;
       if (evt.which === 13) {
-        this.props.addMessage(this.props.currUser ? this.props.currUser.name : "Anonymous", evt.target.value);
+        if (newName !== currName) {
+          this.props.addMessage(null, `${currName ? currName : "Anonymous"} changed their name to ${newName ? newName : "Anonymous"}`, "incomingNotification")
+          this.props.updateCurrUser(newName);
+        }
+        this.props.addMessage(newName ? newName : "Anonymous", evt.target.value, "incomingMessage");
         evt.target.value = null;
       }
     }

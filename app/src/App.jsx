@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currUser: {name: "Bob"},
+      currUser: {name: ""},
       messages: []
     }
   }
@@ -26,18 +26,22 @@ class App extends Component {
       <div>
         <Navbar />
         <MessageList messages={this.state.messages} />
-        <Chatbar currUser={this.state.currUser} addMessage={this.addMessage} />
+        <Chatbar currUser={this.state.currUser} addMessage={this.addMessage} updateCurrUser={this.updateCurrUser} />
       </div>
     );
   }
 
-  addMessage = (username, content) => {
+  addMessage = (username, content, type) => {
     const newMessage = {
-      type: "incomingMessage",
+      type: type,
       username: username,
       content: content
     };
     this.socket.send(JSON.stringify(newMessage));
+  }
+
+  updateCurrUser = (newName) => {
+    this.setState({currUser: {name: newName}});
   }
 
 }
