@@ -61,19 +61,6 @@ class App extends Component {
     }
   }
 
-  // searchForImage = (str) => {
-  //   const words = str.split(" ");
-  //   let output = "";
-  //   for (const word of words) {
-  //     if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(word)) {
-  //       output = output + `<img src='${word}' >` + " ";
-  //     } else {
-  //       output = output + word + " ";
-  //     }
-  //   }
-  //   return output;
-  // }
-
   updateCurrUser = (newName) => {
     this.setState({currUser: {name: newName, colour: this.state.currUser.colour}});
   }

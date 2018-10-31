@@ -45,19 +45,6 @@ wss.on('connection', (client) => {
   };
   assignColour();
 
-  // const searchForImage = (str) => {
-  //   const words = str.split(" ");
-  //   let output = "";
-  //   for (const word of words) {
-  //     if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(word)) {
-  //       output = output + `<img src='${word}' >` + " ";
-  //     } else {
-  //       output = output + word + " ";
-  //     }
-  //   }
-  //   return output;
-  // };
-
   client.on('message', (message) => {
     const sendMessage = () => {
       wss.clients.forEach((c) => {
