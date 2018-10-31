@@ -49,6 +49,7 @@ class App extends Component {
       this.setState({currUser: {name: this.state.currUser.name, colour: newMessage.colour}});
     } else if (newMessage.type === "incomingMessage") {
       console.log(`Incoming message from ${newMessage.username}`)
+      // newMessage.content = this.searchForImage(newMessage.content);
       const messages = this.state.messages.concat(newMessage);
       this.setState({messages: messages});
     } else if (newMessage.type === "incomingNotification") {
@@ -59,6 +60,19 @@ class App extends Component {
       console.log("Unknown response from server");
     }
   }
+
+  // searchForImage = (str) => {
+  //   const words = str.split(" ");
+  //   let output = "";
+  //   for (const word of words) {
+  //     if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(word)) {
+  //       output = output + `<img src='${word}' >` + " ";
+  //     } else {
+  //       output = output + word + " ";
+  //     }
+  //   }
+  //   return output;
+  // }
 
   updateCurrUser = (newName) => {
     this.setState({currUser: {name: newName, colour: this.state.currUser.colour}});

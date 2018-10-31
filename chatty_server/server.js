@@ -45,6 +45,19 @@ wss.on('connection', (client) => {
   };
   assignColour();
 
+  // const searchForImage = (str) => {
+  //   const words = str.split(" ");
+  //   let output = "";
+  //   for (const word of words) {
+  //     if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(word)) {
+  //       output = output + `<img src='${word}' >` + " ";
+  //     } else {
+  //       output = output + word + " ";
+  //     }
+  //   }
+  //   return output;
+  // };
+
   client.on('message', (message) => {
     const sendMessage = () => {
       wss.clients.forEach((c) => {
@@ -58,6 +71,8 @@ wss.on('connection', (client) => {
       console.log(`User ${messageObj.username} said ${messageObj.content}`);
       messageObj.id = uuidv4();
       messageObj.type = "incomingMessage";
+      // messageObj.content = searchForImage(messageObj.content);
+      console.log(messageObj.content);
       sendMessage();
     } else if (messageObj.type === "postNotification") {
       console.log("Updated user");
