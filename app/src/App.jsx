@@ -13,12 +13,8 @@ class App extends Component {
 
   componentDidMount() {
     this.socket = new WebSocket("ws://localhost:3001");
-    console.log("Connected to server");
-    this.socket.onmessage = (event) => {
-      const newMessage = JSON.parse(event.data);
-      const messages = this.state.messages.concat(newMessage);
-      this.setState({messages: messages});
-    }
+    this.socket.onopen = () => console.log("Connected to server");
+    this.socket.onmessage = this.handleMessage;
   }
 
   render() {
@@ -38,6 +34,22 @@ class App extends Component {
       content: content
     };
     this.socket.send(JSON.stringify(newMessage));
+  }
+
+  handleMessage = (event) => {
+    const newMessage = JSON.parse(event.data);
+
+    if (newMessage.type === "incomingMessage") {
+      console.log(`Incoming message from ${newMessage.username}`)
+      const messages = this.state.messages.concat(newMessage);
+      this.setState({messages: messages});
+    } else if (newMessage.type === "incomingNotification") {
+      console.log("Incoming notification")
+      const messages = this.state.messages.concat(newMessage);
+      this.setState({messages: messages});
+    } else {
+      console.log("Unknown response");
+    }
   }
 
   updateCurrUser = (newName) => {
