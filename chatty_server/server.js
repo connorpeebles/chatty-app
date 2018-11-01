@@ -23,6 +23,8 @@ const colours = ["tomato", "red", "green", "blue", "purple", "#2F4F4F"];
 // the ws parameter in the callback.
 wss.on('connection', (client) => {
   console.log('Client connected');
+  // client.thisisatest = "lol";
+  // console.log(client);
 
   const updateNumUsers = () => {
     const numUsers = {
@@ -35,17 +37,34 @@ wss.on('connection', (client) => {
   };
   updateNumUsers();
 
+  const updateUsers = () => {
+    let userArr = [];
+    wss.clients.forEach((c) => {
+      userArr.push({username: c.username, colour: c.colour});
+    });
+    const users = {
+      type: "updateUsers",
+      users: userArr
+    };
+    wss.clients.forEach((c) => {
+      c.send(JSON.stringify(users));
+    });
+  };
+
   const assignColour = () => {
     const random = Math.floor(Math.random() * 6);
+    const colour = colours[random];
+    client.colour = colour;
     const userColour = {
       type: "assignColour",
-      colour: colours[random]
+      colour: colour
     };
     client.send(JSON.stringify(userColour));
   };
   assignColour();
 
   client.on('message', (message) => {
+    console.log(wss.clients);
     const sendMessage = () => {
       wss.clients.forEach((c) => {
         c.send(JSON.stringify(messageObj));
@@ -54,7 +73,11 @@ wss.on('connection', (client) => {
 
     const messageObj = JSON.parse(message);
 
-    if (messageObj.type === "postMessage") {
+    if (messageObj.type === "setCurrUserName") {
+      client.username = messageObj.username;
+      console.log(wss.clients);
+      updateUsers();
+    } else if (messageObj.type === "postMessage") {
       console.log(`User ${messageObj.username} said ${messageObj.content}`);
       messageObj.id = uuidv4();
       messageObj.type = "incomingMessage";
@@ -75,6 +98,7 @@ wss.on('connection', (client) => {
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   client.on('close', () => {
     updateNumUsers();
+    updateUsers();
     console.log('Client disconnected')
   });
 });

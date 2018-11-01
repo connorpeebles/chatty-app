@@ -99,3 +99,27 @@ body {
   line-height: 60px;
   padding: inherit;
 }
+
+.userList {
+  display: none;
+  position: fixed;
+  margin-top: 61px;
+  right: 10px;
+  width: 120px;
+  text-align: center;
+  background-color: mistyrose;
+}
+
+.user {
+  padding: 5px 0;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border-color: black;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.dropdown:hover .userList {
+  display: block;
+}
