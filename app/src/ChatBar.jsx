@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Chatbar that appears at the bottom of the page
 function Chatbar(props) {
   // when user presses enter in chatbar-username input, a notification message is sent and username is updated
   const keyUpHandlerName = (evt) => {
@@ -16,7 +17,7 @@ function Chatbar(props) {
   const keyUpHandlerMessage = (evt) => {
     const currName = props.currUser.name;
     const newName = evt.target.previousSibling.value;
-    if (evt.which === 13) {
+    if (evt.which === 13 && evt.target.value) {
       if (newName !== currName) {
         props.addMessage(null, `${currName ? currName : "Anonymous"} changed their name to ${newName ? newName : "Anonymous"}`, "postNotification")
         props.updateCurrUser(newName);

@@ -93,7 +93,7 @@ wss.on("connection", (client) => {
   client.on("close", () => {
     const alert = {
       type: "incomingNotification",
-      content: `${client.username} has left the chat`,
+      content: `${client.username ? client.username : "Anonymous"} has left the chat`,
       id: uuidv4()
     };
     sendMessage(alert);

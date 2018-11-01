@@ -2,7 +2,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
 
 body {
-  background: white;
+  background: mistyrose;
   color: black;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -28,6 +28,7 @@ body {
   line-height: 40px;
   margin: 5px;
   padding: 0 9px;
+  border-radius: 10px;
 }
 
 .chatbar-message {
@@ -38,6 +39,14 @@ body {
   flex: 2;
 }
 
+.messages {
+  margin: 10px;
+  padding: 5px;
+  background-color: white;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
 .message {
   display: flex;
   padding: 5px;
@@ -46,6 +55,7 @@ body {
 .message.system {
   font-style: italic;
   padding: 5px 20px;
+  color: grey;
 }
 
 .message-content,
@@ -53,6 +63,8 @@ body {
   overflow: hidden;
   margin: 5px;
   padding: 0 10px;
+  font-size: 18px;
+  line-height: normal;
 }
 
 .message-content {
@@ -95,7 +107,7 @@ body {
 .navbar-users {
   color: inherit;
   float: right;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 60px;
   padding: inherit;
 }
@@ -104,19 +116,20 @@ body {
   display: none;
   position: fixed;
   margin-top: 61px;
-  right: 10px;
-  width: 120px;
+  right: 0px;
+  width: 150px;
   text-align: center;
-  background-color: mistyrose;
+  background-color: whitesmoke;
 }
 
 .user {
-  padding: 5px 0;
+  padding: 10px 0;
   border-bottom: 1px solid;
   border-left: 1px solid;
   border-right: 1px solid;
   border-color: black;
   font-weight: 700;
+  font-size: 18px;
   word-break: break-word;
 }
 
