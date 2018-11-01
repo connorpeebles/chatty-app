@@ -1,42 +1,17 @@
-import React, {Component} from 'react';
+import React from 'react';
+import UserList from './UserList.jsx';
 
-class Navbar extends Component {
-  render() {
-    return (
-      <nav className="navbar">
-        <a href="/" className="navbar-brand">Chatty</a>
-        <div className="dropdown">
-        <span className="navbar-users">{this.props.users.length} user{this.props.users.length !== 1 ? "s" : ""} online</span>
-        <UserList users={this.props.users} />
-        </div>
-      </nav>
-    );
-  }
-}
-
-class UserList extends Component {
-  render() {
-    const userElements = this.props.users.map((user) =>
-      <User user={user} />
-    );
-
-    return (
-      <div className="userList">
-        {userElements}
+// navbar at the top of the app
+function Navbar(props) {
+  return (
+    <nav className="navbar">
+      <a href="/" className="navbar-brand">Chatty</a>
+      <div className="users-dropdown">
+        <span className="navbar-users">{props.users.length} user{props.users.length !== 1 ? "s" : ""} online</span>
+        <UserList users={props.users} />
       </div>
-    );
-  }
-}
-
-class User extends Component {
-  render() {
-    const user = this.props.user;
-    return (
-      <div className="user" style={{color: user.colour}}>
-        {user.username ? user.username : "Anonymous"}
-      </div>
-    );
-  }
+    </nav>
+  );
 }
 
 export default Navbar;
