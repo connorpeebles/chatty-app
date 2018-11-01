@@ -1,5 +1,6 @@
 import React from 'react';
 
+// each individual message on the page
 function Message(props) {
   const message = props.message;
   const words = message.content.split(' ');

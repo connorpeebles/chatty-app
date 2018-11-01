@@ -1,45 +1,46 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Chatbar extends Component {
-  render() {
-    const keyUpHandlerName = (evt) => {
-      const currName = this.props.currUser.name;
-      const newName = evt.target.value;
-      if (evt.which === 13 && newName !== currName) {
-        this.props.addMessage(null, `${currName ? currName : "Anonymous"} changed their name to ${newName ? newName : "Anonymous"}`, "postNotification")
-        this.props.updateCurrUser(newName);
-      }
+function Chatbar(props) {
+  // when user presses enter in chatbar-username input, a notification message is sent and username is updated
+  const keyUpHandlerName = (evt) => {
+    const currName = props.currUser.name;
+    const newName = evt.target.value;
+    if (evt.which === 13 && newName !== currName) {
+      props.addMessage(null, `${currName ? currName : "Anonymous"} changed their name to ${newName ? newName : "Anonymous"}`, "postNotification")
+      props.updateCurrUser(newName);
     }
-
-    const keyUpHandlerMessage = (evt) => {
-      const currName = this.props.currUser.name;
-      const newName = evt.target.previousSibling.value;
-      if (evt.which === 13) {
-        if (newName !== currName) {
-          this.props.addMessage(null, `${currName ? currName : "Anonymous"} changed their name to ${newName ? newName : "Anonymous"}`, "postNotification")
-          this.props.updateCurrUser(newName);
-        }
-        this.props.addMessage(newName ? newName : "Anonymous", evt.target.value, "postMessage");
-        evt.target.value = null;
-      }
-    }
-
-    return (
-      <footer className="chatbar">
-        <input
-          className="chatbar-username"
-          placeholder="Your Name (Optional)"
-          defaultValue={this.props.currUser.name}
-          onKeyUp={keyUpHandlerName}
-        />
-        <input
-          className="chatbar-message"
-          placeholder="Type a message and hit ENTER"
-          onKeyUp={keyUpHandlerMessage}
-        />
-      </footer>
-    );
   }
+
+  // when user presses enter in chatbar-message input, the message is sent
+  // if the username has also been changed, a notification message is sent and username is updated
+  const keyUpHandlerMessage = (evt) => {
+    const currName = props.currUser.name;
+    const newName = evt.target.previousSibling.value;
+    if (evt.which === 13) {
+      if (newName !== currName) {
+        props.addMessage(null, `${currName ? currName : "Anonymous"} changed their name to ${newName ? newName : "Anonymous"}`, "postNotification")
+        props.updateCurrUser(newName);
+      }
+      props.addMessage(newName ? newName : "Anonymous", evt.target.value, "postMessage");
+      evt.target.value = null;
+    }
+  }
+
+  return (
+    <footer className="chatbar">
+      <input
+        className="chatbar-username"
+        placeholder="Your Name (Optional)"
+        defaultValue={props.currUser.name}
+        onKeyUp={keyUpHandlerName}
+      />
+      <input
+        className="chatbar-message"
+        placeholder="Type a message and hit ENTER"
+        onKeyUp={keyUpHandlerMessage}
+      />
+    </footer>
+  );
 }
 
 export default Chatbar;
