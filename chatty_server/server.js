@@ -26,16 +26,16 @@ wss.on('connection', (client) => {
   // client.thisisatest = "lol";
   // console.log(client);
 
-  const updateNumUsers = () => {
-    const numUsers = {
-      type: "updateNumUsers",
-      numUsers: wss.clients.size
-    };
-    wss.clients.forEach((c) => {
-      c.send(JSON.stringify(numUsers));
-    });
-  };
-  updateNumUsers();
+  // const updateNumUsers = () => {
+  //   const numUsers = {
+  //     type: "updateNumUsers",
+  //     numUsers: wss.clients.size
+  //   };
+  //   wss.clients.forEach((c) => {
+  //     c.send(JSON.stringify(numUsers));
+  //   });
+  // };
+  // updateNumUsers();
 
   const updateUsers = () => {
     let userArr = [];
@@ -64,7 +64,7 @@ wss.on('connection', (client) => {
   assignColour();
 
   client.on('message', (message) => {
-    console.log(wss.clients);
+    // console.log(wss.clients);
     const sendMessage = () => {
       wss.clients.forEach((c) => {
         c.send(JSON.stringify(messageObj));
@@ -75,14 +75,14 @@ wss.on('connection', (client) => {
 
     if (messageObj.type === "setCurrUserName") {
       client.username = messageObj.username;
-      console.log(wss.clients);
+      // console.log(wss.clients);
       updateUsers();
     } else if (messageObj.type === "postMessage") {
       console.log(`User ${messageObj.username} said ${messageObj.content}`);
       messageObj.id = uuidv4();
       messageObj.type = "incomingMessage";
       // messageObj.content = searchForImage(messageObj.content);
-      console.log(messageObj.content);
+      // console.log(messageObj.content);
       sendMessage();
     } else if (messageObj.type === "postNotification") {
       console.log("Updated user");
@@ -97,7 +97,7 @@ wss.on('connection', (client) => {
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   client.on('close', () => {
-    updateNumUsers();
+    // updateNumUsers();
     updateUsers();
     console.log('Client disconnected')
   });

@@ -7,7 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numUsers: null,
+      // numUsers: null,
       users: [],
       currUser: {name: ""},
       messages: []
@@ -30,7 +30,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar numUsers={this.state.numUsers} users={this.state.users} />
+        <Navbar users={this.state.users} />
         <MessageList messages={this.state.messages} />
         <div style={{ float:"left", clear: "both" }} ref={(el) => { this.messagesEnd = el; }}></div>
         <Chatbar currUser={this.state.currUser} addMessage={this.addMessage} updateCurrUser={this.updateCurrUser} />
@@ -51,10 +51,10 @@ class App extends Component {
   handleMessage = (event) => {
     const newMessage = JSON.parse(event.data);
 
-    if (newMessage.type === "updateNumUsers") {
-      console.log("Updated number of users");
-      this.setState({numUsers: newMessage.numUsers})
-    } else if (newMessage.type === "updateUsers") {
+    // if (newMessage.type === "updateNumUsers") {
+    //   console.log("Updated number of users");
+    //   this.setState({numUsers: newMessage.numUsers})
+    if (newMessage.type === "updateUsers") {
       console.log(newMessage.users);
       this.setState({users: newMessage.users});
     } else if (newMessage.type === "assignColour") {

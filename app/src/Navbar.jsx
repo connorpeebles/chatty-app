@@ -6,7 +6,7 @@ class Navbar extends Component {
       <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
         <div className="dropdown">
-        <span className="navbar-users">{this.props.numUsers} user{this.props.numUsers !== 1 ? "s" : ""} online</span>
+        <span className="navbar-users">{this.props.users.length} user{this.props.users.length !== 1 ? "s" : ""} online</span>
         <UserList users={this.props.users} />
         </div>
       </nav>
