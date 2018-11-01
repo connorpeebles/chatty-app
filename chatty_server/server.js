@@ -12,7 +12,7 @@ const server = express()
 const wss = new SocketServer({ server });
 
 // possible username display colours
-const colours = ["tomato", "red", "green", "blue", "purple", "#2F4F4F"];
+const colours = ["tomato", "red", "green", "blue", "purple", "darkslategrey", "darkred", "mediumvioletred", "orangered", "magenta", "indigo", "limegreen", "darkgreen", "darkolivegreen", "steelblue"];
 
 // When a client connects they are assigned a socket, represented by the 'client' parameter in the callback.
 wss.on("connection", (client) => {
