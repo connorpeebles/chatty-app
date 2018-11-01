@@ -1,58 +1,42 @@
-// server.js
+// websocket server
 
-const express = require('express');
-const SocketServer = require('ws').Server;
-const uuidv4 = require('uuid/v4');
+const express = require("express");
+const SocketServer = require("ws").Server;
+const uuidv4 = require("uuid/v4");
 
-// Set the port to 3001
 const PORT = 3001;
 
-// Create a new express server
 const server = express()
-   // Make the express server serve static assets (html, javascript, css) from the /public folder
-  .use(express.static('public'))
-  .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
+  .listen(PORT, "0.0.0.0", "localhost", () => console.log(`Listening on ${ PORT }`));
 
-// Create the WebSockets server
 const wss = new SocketServer({ server });
 
+// possible username display colours
 const colours = ["tomato", "red", "green", "blue", "purple", "#2F4F4F"];
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
-wss.on('connection', (client) => {
-  console.log('Client connected');
-  // client.thisisatest = "lol";
-  // console.log(client);
+// When a client connects they are assigned a socket, represented by the 'client' parameter in the callback.
+wss.on("connection", (client) => {
+  console.log("Client connected");
 
-  // const updateNumUsers = () => {
-  //   const numUsers = {
-  //     type: "updateNumUsers",
-  //     numUsers: wss.clients.size
-  //   };
-  //   wss.clients.forEach((c) => {
-  //     c.send(JSON.stringify(numUsers));
-  //   });
-  // };
-  // updateNumUsers();
-
-  const updateUsers = () => {
-    let userArr = [];
+  // sendMessage converts the 'JSONmessage' to a string and sends it to the browser of each user
+  const sendMessage = (JSONmessage) => {
     wss.clients.forEach((c) => {
-      userArr.push({username: c.username, colour: c.colour});
-    });
-    const users = {
-      type: "updateUsers",
-      users: userArr
-    };
-    wss.clients.forEach((c) => {
-      c.send(JSON.stringify(users));
+      c.send(JSON.stringify(JSONmessage));
     });
   };
 
+  const newUserAlert = () => {
+    const alert = {
+      type: "incomingNotification",
+      content: "A new user has joined the chat"
+    };
+    sendMessage(alert);
+  };
+  newUserAlert();
+
+  // assignColour assigns a random colour (from constant 'colours') to the connected user and sends it to the browser of that user
   const assignColour = () => {
-    const random = Math.floor(Math.random() * 6);
+    const random = Math.floor(Math.random() * colours.length);
     const colour = colours[random];
     client.colour = colour;
     const userColour = {
@@ -63,19 +47,25 @@ wss.on('connection', (client) => {
   };
   assignColour();
 
-  client.on('message', (message) => {
-    // console.log(wss.clients);
-    const sendMessage = () => {
-      wss.clients.forEach((c) => {
-        c.send(JSON.stringify(messageObj));
-      });
+  // updateUsers sends the username and colour for each user to the browser of each user
+  const updateUsers = () => {
+    let userArr = [];
+    wss.clients.forEach((c) => {
+      userArr.push({username: c.username, colour: c.colour});
+    });
+    const users = {
+      type: "updateUsers",
+      users: userArr
     };
+    sendMessage(users);
+  };
 
+  client.on("message", (message) => {
+    // message received, as a JSON
     const messageObj = JSON.parse(message);
 
     if (messageObj.type === "setCurrUserName") {
       client.username = messageObj.username;
-      // console.log(wss.clients);
       updateUsers();
     } else if (messageObj.type === "postMessage") {
       console.log(`User ${messageObj.username} said ${messageObj.content}`);
@@ -83,12 +73,12 @@ wss.on('connection', (client) => {
       messageObj.type = "incomingMessage";
       // messageObj.content = searchForImage(messageObj.content);
       // console.log(messageObj.content);
-      sendMessage();
+      sendMessage(messageObj);
     } else if (messageObj.type === "postNotification") {
       console.log("Updated user");
       messageObj.id = uuidv4();
       messageObj.type = "incomingNotification";
-      sendMessage();
+      sendMessage(messageObj);
     } else {
       console.log("Unknown request");
     }
@@ -96,9 +86,14 @@ wss.on('connection', (client) => {
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  client.on('close', () => {
+  client.on("close", () => {
+    const alert = {
+      type: "incomingNotification",
+      content: `${client.username} has left the chat`
+    };
+    sendMessage(alert);
     // updateNumUsers();
     updateUsers();
-    console.log('Client disconnected')
+    console.log("Client disconnected")
   });
 });
