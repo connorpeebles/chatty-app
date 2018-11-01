@@ -33,7 +33,7 @@ function Message(props) {
     // render notification
     } else if (message.type === 'incomingNotification') {
       return (
-        <div className="message system">{message.content}</div>
+        <div className="message system"><ion-icon name="people"></ion-icon>&nbsp;{message.content}</div>
       );
     }
   }
