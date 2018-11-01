@@ -18,13 +18,14 @@ const colours = ["tomato", "red", "green", "blue", "purple", "#2F4F4F"];
 wss.on("connection", (client) => {
   console.log("Client connected");
 
-  // sendMessage converts the 'JSONmessage' to a string and sends it to the browser of each user
-  const sendMessage = (JSONmessage) => {
+  // sendMessage converts the messageObj to a string and sends it to the browser of each user
+  const sendMessage = (messageObj) => {
     wss.clients.forEach((c) => {
-      c.send(JSON.stringify(JSONmessage));
+      c.send(JSON.stringify(messageObj));
     });
   };
 
+  // newUserAlert sends a notification to each browser that a new user has joined the chat
   const newUserAlert = () => {
     const alert = {
       type: "incomingNotification",
@@ -64,16 +65,17 @@ wss.on("connection", (client) => {
     // message received, as a JSON
     const messageObj = JSON.parse(message);
 
+    // calls updateUsers when a username is changed
     if (messageObj.type === "setCurrUserName") {
       client.username = messageObj.username;
       updateUsers();
+    // assigns a uuid to a message and sends it to each browser
     } else if (messageObj.type === "postMessage") {
       console.log(`User ${messageObj.username} said ${messageObj.content}`);
       messageObj.id = uuidv4();
       messageObj.type = "incomingMessage";
-      // messageObj.content = searchForImage(messageObj.content);
-      // console.log(messageObj.content);
       sendMessage(messageObj);
+    // assigns a uuid to each notification and sends it to each browser
     } else if (messageObj.type === "postNotification") {
       console.log("Updated user");
       messageObj.id = uuidv4();
@@ -85,15 +87,14 @@ wss.on("connection", (client) => {
 
   });
 
-  // Set up a callback for when a client closes the socket. This usually means they closed their browser.
+  // sends a notification to each user when a user leaves the chat, and updates the current users
   client.on("close", () => {
     const alert = {
       type: "incomingNotification",
       content: `${client.username} has left the chat`
     };
     sendMessage(alert);
-    // updateNumUsers();
     updateUsers();
-    console.log("Client disconnected")
+    console.log("Client disconnected");
   });
 });
