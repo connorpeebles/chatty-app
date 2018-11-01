@@ -29,7 +29,8 @@ wss.on("connection", (client) => {
   const newUserAlert = () => {
     const alert = {
       type: "incomingNotification",
-      content: "A new user has joined the chat"
+      content: "A new user has joined the chat",
+      id: uuidv4()
     };
     sendMessage(alert);
   };
@@ -40,6 +41,7 @@ wss.on("connection", (client) => {
     const random = Math.floor(Math.random() * colours.length);
     const colour = colours[random];
     client.colour = colour;
+    client.id = uuidv4();
     const userColour = {
       type: "assignColour",
       colour: colour
@@ -52,7 +54,7 @@ wss.on("connection", (client) => {
   const updateUsers = () => {
     let userArr = [];
     wss.clients.forEach((c) => {
-      userArr.push({username: c.username, colour: c.colour});
+      userArr.push({username: c.username, colour: c.colour, id: c.id});
     });
     const users = {
       type: "updateUsers",
@@ -91,7 +93,8 @@ wss.on("connection", (client) => {
   client.on("close", () => {
     const alert = {
       type: "incomingNotification",
-      content: `${client.username} has left the chat`
+      content: `${client.username} has left the chat`,
+      id: uuidv4()
     };
     sendMessage(alert);
     updateUsers();

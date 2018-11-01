@@ -5,7 +5,7 @@ import User from './User.jsx';
 function UserList(props) {
   // maps a User component for each user
   const userElements = props.users.map((user) =>
-    <User user={user} />
+    <User user={user} key={user.id} />
   );
 
   return (
