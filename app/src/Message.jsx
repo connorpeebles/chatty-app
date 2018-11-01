@@ -4,18 +4,23 @@ import React from 'react';
 function Message(props) {
   const message = props.message;
   const words = message.content.split(' ');
+  let imgCounter = 0;
+  let urlCounter = 0;
 
   // checks each 'word' in the message to see if its a weblink
   const output = words.map((word) => {
     // if word is an image link, render it is an image
     if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(word)) {
-      return (<div><img src={word} /></div>);
+      imgCounter++;
+      return (<div key={"img" + imgCounter + " " + message.id} ><img src={word} /></div>);
     // if word is a weblink (starting with http/https), render it as a link
     } else if ((/^https?:\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/).test(word)) {
-      return (<span><a target="_blank" rel="noopener noreferrer" href={word}>{word}</a> </span>)
+      urlCounter++;
+      return (<span key={"url" + urlCounter + " " + message.id} ><a target="_blank" rel="noopener noreferrer" href={word}>{word}</a> </span>)
     // if word is a weblink (NOT starting with http/https), render it as a link
     } else if ((/^([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/).test(word)) {
-      return (<span><a target="_blank" rel="noopener noreferrer" href={'https://' + word}>{word}</a> </span>)
+      urlCounter++;
+      return (<span key={"url" + urlCounter + " " + message.id} ><a target="_blank" rel="noopener noreferrer" href={'https://' + word}>{word}</a> </span>)
     } else {
       return word + ' ';
     }
