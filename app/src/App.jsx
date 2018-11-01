@@ -19,11 +19,16 @@ class App extends Component {
     this.socket.onmessage = this.handleMessage;
   }
 
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
   render() {
     return (
       <div>
         <Navbar numUsers={this.state.numUsers} />
         <MessageList messages={this.state.messages} />
+        <div style={{ float:"left", clear: "both" }} ref={(el) => { this.messagesEnd = el; }}></div>
         <Chatbar currUser={this.state.currUser} addMessage={this.addMessage} updateCurrUser={this.updateCurrUser} />
       </div>
     );
@@ -59,6 +64,10 @@ class App extends Component {
     } else {
       console.log("Unknown response from server");
     }
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
   updateCurrUser = (newName) => {
