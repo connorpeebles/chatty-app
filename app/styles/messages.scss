@@ -1,0 +1,41 @@
+.messages {
+  margin: 10px;
+  padding: 5px;
+  background-color: white;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+.message {
+  display: flex;
+  padding: 5px;
+}
+
+.message.system {
+  font-style: italic;
+  padding: 5px 20px;
+  color: grey;
+}
+
+.message-content,
+.message-username {
+  overflow: hidden;
+  margin: 5px;
+  padding: 0 10px;
+  font-size: 18px;
+  line-height: normal;
+  word-break: break-word;
+}
+
+.message-content {
+  flex: 8;
+}
+
+.message-username {
+  flex: 2;
+  font-weight: 700;
+}
+
+.message img {
+  max-width: 60%;
+}
