@@ -15,11 +15,11 @@ function Message(props) {
       imgCounter++;
       return (<div key={'img' + imgCounter + ' ' + message.id} ><img src={word} /></div>);
     // if word is a weblink (starting with http/https), render it as a link
-    } else if ((/^https?:\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/).test(word)) {
+    } else if ((/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/).test(word)) {
       urlCounter++;
       return (<span key={'url' + urlCounter + ' ' + message.id} ><a target="_blank" rel="noopener noreferrer" href={word}>{word}</a> </span>)
     // if word is a weblink (NOT starting with http/https), render it as a link
-    } else if ((/^([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/).test(word)) {
+    } else if ((/^[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/).test(word)) {
       urlCounter++;
       return (<span key={'url' + urlCounter + ' ' + message.id} ><a target="_blank" rel="noopener noreferrer" href={'https://' + word}>{word}</a> </span>)
     } else {
