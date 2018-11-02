@@ -15,6 +15,7 @@ Chatty is a single-page instant messaging application built with ReactJS and web
 - Users may send image URL's ending in gif, jpg, jpeg, tiff, or png, and the image is displayed in the messages
 - Users may send a URL, which is displayed in the messages as a link which opens in a new tab when clicked
 - Users are randomly assigned a colour upon entering the chat room
+- Users' own messages are styled differently than messages sent by other users, to help with readability
 - Auto-scrolls to keep the most recently sent message in view
 
 ## Dependencies
