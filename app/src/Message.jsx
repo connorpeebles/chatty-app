@@ -29,7 +29,7 @@ function Message(props) {
 
   const messageElement = () => {
     console.log(props.currUser)
-    // render message
+    // render message from user that is NOT currUser
     if (message.type === 'incomingMessage' && message.clientId !== props.currUser.id) {
       return (
         <div className="message">
@@ -38,7 +38,7 @@ function Message(props) {
           <span style={{color: message.colour}} className="message-username"></span>
         </div>
       );
-    // render notification
+    // render messages from currUser
     } else if (message.type === 'incomingMessage') {
       return (
         <div className="message">
@@ -47,6 +47,7 @@ function Message(props) {
           <span style={{color: message.colour}} className="message-username curr-user">{message.username}</span>
         </div>
       );
+    // render notification
     } else if (message.type === 'incomingNotification') {
       return (
         <div className="message">

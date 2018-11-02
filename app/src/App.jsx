@@ -58,12 +58,11 @@ class App extends Component {
     // updates users state
     if (newMessage.type === "updateUsers") {
       this.setState({users: newMessage.users});
-    // updates colour parameter of currUser state
+    // updates colour and Id parameter of currUser state
     } else if (newMessage.type === "assignColour") {
       this.setState({currUser: {name: this.state.currUser.name, colour: newMessage.colour, id: newMessage.id}});
     // updates messages state
     } else if (newMessage.type === "incomingMessage") {
-      console.log(newMessage);
       console.log(`Incoming message from ${newMessage.username}`)
       const messages = this.state.messages.concat(newMessage);
       this.setState({messages: messages});
