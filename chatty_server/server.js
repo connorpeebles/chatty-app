@@ -36,19 +36,20 @@ wss.on("connection", (client) => {
   };
   newUserAlert();
 
-  // assignColour assigns a random colour (from constant 'colours') to the connected user and sends it to the browser of that user
-  const assignColour = () => {
+  // assignColour assigns a random colour (from constant 'colours') and UUID to the connected user and sends it to the browser of that user
+  const assignColourAndId = () => {
     const random = Math.floor(Math.random() * colours.length);
     const colour = colours[random];
     client.colour = colour;
     client.id = uuidv4();
-    const userColour = {
+    const userColourAndId = {
       type: "assignColour",
-      colour: colour
+      colour: colour,
+      id: client.id
     };
-    client.send(JSON.stringify(userColour));
+    client.send(JSON.stringify(userColourAndId));
   };
-  assignColour();
+  assignColourAndId();
 
   // updateUsers sends the username and colour for each user to the browser of each user
   const updateUsers = () => {
@@ -75,6 +76,8 @@ wss.on("connection", (client) => {
     } else if (messageObj.type === "postMessage") {
       console.log(`User ${messageObj.username} said ${messageObj.content}`);
       messageObj.id = uuidv4();
+      // console.log("id:", client.id);
+      messageObj.clientId = client.id;
       messageObj.type = "incomingMessage";
       sendMessage(messageObj);
     // assigns a uuid to each notification and sends it to each browser

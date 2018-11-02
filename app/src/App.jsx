@@ -33,7 +33,7 @@ class App extends Component {
     return (
       <div>
         <Navbar users={this.state.users} />
-        <MessageList messages={this.state.messages} />
+        <MessageList messages={this.state.messages} currUser={this.state.currUser} />
         <div style={{ float:"left", clear: "both" }} ref={(el) => { this.messagesEnd = el; }}></div>
         <Chatbar currUser={this.state.currUser} addMessage={this.addMessage} updateCurrUser={this.updateCurrUser} />
       </div>
@@ -60,9 +60,10 @@ class App extends Component {
       this.setState({users: newMessage.users});
     // updates colour parameter of currUser state
     } else if (newMessage.type === "assignColour") {
-      this.setState({currUser: {name: this.state.currUser.name, colour: newMessage.colour}});
+      this.setState({currUser: {name: this.state.currUser.name, colour: newMessage.colour, id: newMessage.id}});
     // updates messages state
     } else if (newMessage.type === "incomingMessage") {
+      console.log(newMessage);
       console.log(`Incoming message from ${newMessage.username}`)
       const messages = this.state.messages.concat(newMessage);
       this.setState({messages: messages});
@@ -83,7 +84,7 @@ class App extends Component {
 
   // sends message of updated username to the server and updates the name parameter of the currUser state
   updateCurrUser = (newName) => {
-    this.setState({currUser: {name: newName, colour: this.state.currUser.colour}});
+    this.setState({currUser: {name: newName, colour: this.state.currUser.colour, id: this.state.currUser.id}});
     const currUserName = {
       type: "setCurrUserName",
       username: newName

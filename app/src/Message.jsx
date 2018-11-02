@@ -28,18 +28,32 @@ function Message(props) {
   });
 
   const messageElement = () => {
+    console.log(props.currUser)
     // render message
-    if (message.type === 'incomingMessage') {
+    if (message.type === 'incomingMessage' && message.clientId !== props.currUser.id) {
       return (
         <div className="message">
           <span style={{color: message.colour}} className="message-username">{message.username}</span>
           <span className="message-content">{output}</span>
+          <span style={{color: message.colour}} className="message-username"></span>
         </div>
       );
     // render notification
+    } else if (message.type === 'incomingMessage') {
+      return (
+        <div className="message">
+          <span style={{color: message.colour}} className="message-username"></span>
+          <span className="message-content curr-user">{output}</span>
+          <span style={{color: message.colour}} className="message-username curr-user">{message.username}</span>
+        </div>
+      );
     } else if (message.type === 'incomingNotification') {
       return (
-        <div className="message system"><ion-icon name="people"></ion-icon>&nbsp;{message.content}</div>
+        <div className="message">
+          <span style={{color: message.colour}} className="message-username"></span>
+          <span className="message system"><ion-icon name="people"></ion-icon>&nbsp;{message.content}</span>
+          <span style={{color: message.colour}} className="message-username curr-user"></span>
+        </div>
       );
     }
   }

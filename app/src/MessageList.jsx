@@ -5,7 +5,7 @@ import Message from './Message.jsx';
 function MessageList(props) {
   // maps a Message component for each message
   const messageElements = props.messages.map((message) =>
-    <Message message={message} key={message.id} />
+    <Message message={message} currUser={props.currUser} key={message.id} />
   );
 
   return (
